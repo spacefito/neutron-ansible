@@ -165,7 +165,6 @@ neutron_log_dir: /var/log/neutron
 neutron_common_rundir: /var/run/neutron
 router_distributed: "{% if false in NEU_SVR | get_provided_data_values('router_distributed') %}False{% else %}True{% endif %}"
 neutron_l3_ha: "{% if true in NEU_SVR | get_provided_data_values('neutron_l3_ha') %}True{% else %}False{% endif %}"
-neutron_vlan_transparent: "{%- if config_data.NEU is defined and config_data.NEU.vlan_transparent is defined and config_data.NEU.vlan_transparent -%}vlan_transparent = True{%- endif -%}"
 
 # vmware vcenter specific attributes
 vcenter_cluster_dvs_mapping: "{% if host.pass_through.vmware is defined %}{% if host.pass_through.vmware.cluster_dvs_mapping is defined %}{{ host.pass_through.vmware.cluster_dvs_mapping }} {% else %}no_mapping{% endif %}{% endif %}"
