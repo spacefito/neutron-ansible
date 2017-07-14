@@ -93,6 +93,7 @@
   neutron_service_cmd: "neutron-ovsvapp-agent"
   neutron_service_cmd_args:
     "--config-file={{ neutron_conf_dir }}/neutron.conf
+      --config-file={{ neutron_conf_dir }}/ml2_conf.ini
       --config-file={{ neutron_conf_dir }}/plugins/ml2/ovsvapp_agent.ini
       --log-file={{ neutron_log_dir }}/ovsvapp-agent/ovsvapp_agent.log"
 

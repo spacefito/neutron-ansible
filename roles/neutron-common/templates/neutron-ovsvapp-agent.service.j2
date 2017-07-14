@@ -21,7 +21,7 @@ Description=neutron-ovsvapp-agent Service
 Requires={{ neutron_common_rundir_service }}
 
 [Service]
-ExecStart={{ neutron_bin_dir }}/neutron-ovsvapp-agent --config-file={{ neutron_conf_dir }}/neutron.conf --config-file={{ neutron_conf_dir }}/plugins/ml2/ovsvapp_agent.ini --log-file={{ neutron_log_dir }}/ovsvapp-agent/ovsvapp_agent.log
+ExecStart={{ neutron_bin_dir }}/neutron-ovsvapp-agent --config-file={{ neutron_conf_dir }}/neutron.conf --config-file={{ neutron_conf_dir }}/ml2_conf.ini --config-file={{ neutron_conf_dir }}/plugins/ml2/ovsvapp_agent.ini --log-file={{ neutron_log_dir }}/ovsvapp-agent/ovsvapp_agent.log
 Environment=
 User={{ neutron_user }}
 Group={{ neutron_group }}
