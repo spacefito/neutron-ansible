@@ -23,7 +23,7 @@ required_packages:
   - net-tools
   - radvd
   - iproute2
-  - openvswitch-switch
+  - openvswitch
   - iptables
   - keepalived
   - conntrack-tools

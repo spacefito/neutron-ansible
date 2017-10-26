@@ -19,5 +19,5 @@
 ---
 # packages listed here will be installed by neutron-common | install
 required_packages:
-  - openvswitch-switch
+  - openvswitch
   - iproute2
