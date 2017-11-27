@@ -23,7 +23,6 @@
 [DEFAULT]
 log_config_append = {{ neutron_l3_agent_logging_config_file }}
 state_path = {{ neutron_common_rundir }}
-send_arp_for_ha = 3
 use_namespaces = True
 interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
 agent_mode = {{ neutron_l3_agent_mode }}
