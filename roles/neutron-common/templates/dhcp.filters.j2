@@ -40,12 +40,15 @@ mm-ctl: CommandFilter, mm-ctl, root
 dhcp_release: CommandFilter, dhcp_release, root
 dhcp_release6: CommandFilter, dhcp_release6, root
 
-# metadata proxy
-metadata_proxy: CommandFilter, neutron-ns-metadata-proxy, root
+# haproxy
+haproxy: RegExpFilter, haproxy, root, haproxy, -f, .*
+kill_haproxy: KillFilter, root, haproxy, -15, -9, -HUP
+
 # RHEL invocation of the metadata proxy will report /usr/bin/python
 kill_metadata_neutron_venv_p2: KillFilter, root, {{ neutron_real_bin_dir }}/python2, -15, -9
 kill_metadata: KillFilter, root, python, -15, -9
 kill_metadata7: KillFilter, root, python2.7, -15, -9
+kill_metadata35: KillFilter, root, python3.5, -9
 
 # ip_lib
 ip: IpFilter, ip, root

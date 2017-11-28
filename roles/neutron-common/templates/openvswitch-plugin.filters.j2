@@ -34,9 +34,11 @@ ovs-vsctl: CommandFilter, ovs-vsctl, root
 ovs-ofctl: CommandFilter, ovs-ofctl, root
 kill_ovsdb_client: KillFilter, root, /usr/bin/ovsdb-client, -9
 ovsdb-client: CommandFilter, ovsdb-client, root
-xe: CommandFilter, xe, root
 
 # ip_lib
 ip: IpFilter, ip, root
 find: RegExpFilter, find, root, find, /sys/class/net, -maxdepth, 1, -type, l, -printf, %.*
 ip_exec: IpNetnsExecFilter, ip, root
+
+# needed for FDB extension
+bridge: CommandFilter, bridge, root

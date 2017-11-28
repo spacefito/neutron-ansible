@@ -1,6 +1,5 @@
 {#
 #
-# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
 # (c) Copyright 2017 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -16,6 +15,7 @@
 # under the License.
 #
 #}
+
 # neutron-rootwrap command filters for nodes on which neutron is
 # expected to control network
 #
@@ -26,17 +26,5 @@
 
 [Filters]
 
-# neutron/agent/linux/iptables_manager.py
-#   "iptables-save", ...
-iptables-save: CommandFilter, iptables-save, root
-iptables-restore: CommandFilter, iptables-restore, root
-ip6tables-save: CommandFilter, ip6tables-save, root
-ip6tables-restore: CommandFilter, ip6tables-restore, root
-
-# neutron/agent/linux/iptables_manager.py
-#   "iptables", "-A", ...
-iptables: CommandFilter, iptables, root
-ip6tables: CommandFilter, ip6tables, root
-
-# neutron/agent/linux/ip_conntrack.py
-conntrack: CommandFilter, conntrack, root
+# netns-cleanup
+netstat: CommandFilter, netstat, root

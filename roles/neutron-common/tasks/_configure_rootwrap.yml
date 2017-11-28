@@ -71,7 +71,9 @@
     - ipset-firewall.filters
     - iptables-firewall.filters
     - linuxbridge-plugin.filters
+    - netns-cleanup.filters
     - openvswitch-plugin.filters
+    - privsep.filters
 
 - name: neutron-common | _configure_rootwrap | Customize neutron-lbaas rootwrap filters
   become: yes
