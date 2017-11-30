@@ -116,7 +116,7 @@ neutron_flat_networks: "{% set comma = joiner(',') %}
                                 {%- endfor -%}
                             {%- endif -%}
                         {%- endif -%}"
-neutron_db_connection: "mysql://{{ mysql.admin_user }}:{{ mysql.admin_password | urlencode }}@{{ mysql.host }}/ovs_neutron{{ mysql.db_ssl }}"
+neutron_db_connection: "mysql+pymysql://{{ mysql.admin_user }}:{{ mysql.admin_password | urlencode }}@{{ mysql.host }}/ovs_neutron{{ mysql.db_ssl }}"
 neutron_bridge_mappings: "{% set temp_list = [] %}
                             {%- if host.my_network_tags is defined -%}
                                 {%- for network_tag in host.my_network_tags -%}
