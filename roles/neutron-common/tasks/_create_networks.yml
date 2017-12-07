@@ -16,15 +16,15 @@
 #
 ---
 
-- command: neutron {{ neutron_cmd_args }} \
-    net-create \
-      --provider:network_type {{ item.provider[0].network_type }} \
-      --provider:physical_network {{ item.provider[0].physical_network }} \
+- command: openstack {{ openstack_cmd_args }} \
+    network create \
+      --provider-network-type {{ item.provider[0].network_type }} \
+      --provider-physical-network {{ item.provider[0].physical_network }} \
     {% if item.provider[0].segmentation_id is defined %}
-      --provider:segmentation_id {{ item.provider[0].segmentation_id }} \
+      --provider-segment {{ item.provider[0].segmentation_id }} \
     {% endif %}
     {% if item.shared is defined %}
-      --shared \
+      --share \
     {% endif %}
       {{ item.name }}
   with_items: "{{ provider_data }}"

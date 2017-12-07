@@ -17,29 +17,17 @@
 ---
 
 ##
-## For running openstack or neutron command
+## For running openstack command
 ##
-common_cmd_args: >
+openstack_cmd_args: >
   --os-username {{ neutron_admin_user }}
   --os-project-name {{ neutron_admin_project_name }}
   --os-user-domain-name Default
   --os-project-domain-name Default
   --os-auth-url {{ neutron_auth_url }}
   --os-region-name {{ neutron_api.public_region }}
-
-##
-## For running openstack command
-##
-openstack_cmd_args: >
-  {{ common_cmd_args }}
   --os-interface internal
 
-##
-## For running neutron command
-##
-neutron_cmd_args: >
-  {{ common_cmd_args }}
-  --os-endpoint-type internalURL
 
 ##
 ## Needed for provider_net_create

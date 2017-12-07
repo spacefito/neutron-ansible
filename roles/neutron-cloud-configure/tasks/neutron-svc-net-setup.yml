@@ -55,39 +55,25 @@
     do_net_create: False
     svc_net_id: ""
     svc_subnet_id: ""
-    provider_net_args: "--provider:physical_network {{ PROV_PHYS_NET }}
-                        --provider:network_type {{ PROV_NET_TYPE }}"
+    provider_net_args: "--provider-physical-network {{ PROV_PHYS_NET }}
+                        --provider-network-type {{ PROV_NET_TYPE }}"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | build neutron net-create command string (VLAN)
   set_fact:
     provider_net_args: "{{ provider_net_args }}
-                        --provider:segmentation_id {{ PROV_NET_VLAN_ID }}"
+                        --provider-segment {{ PROV_NET_VLAN_ID }}"
   when: PROV_NET_TYPE == "vlan"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | build the neutron subnet-create cmd string
   set_fact:
     svc_subnet_args:
-      "{{ SVC_NET_CIDR }} --allocation-pool
+      "--subnet-range {{ SVC_NET_CIDR }} --allocation-pool
       start={{ SVC_ALLOCATION_START }},end={{ SVC_ALLOCATION_END }}
-      --host-routes type=dict list=true
-      destination={{ SVC_NET_DEST }},nexthop={{ SVC_NET_GATEWAY }}"
-
-- name: neutron-cloud-configure | neutron-svc-net-setup | Get the tenant id
-  shell:  openstack {{ openstack_cmd_args }}
-          project show -f value -c id {{ neutron_admin_project_name }}
-  register: user_id_result
-  changed_when: False
-  environment:
-    OS_PASSWORD: "{{ neutron_admin_password }}"
-
-- name: neutron-cloud-configure | neutron-svc-net-setup | Set ID
-  set_fact:
-    tenant_id: "{{ user_id_result.stdout }}"
-  when: user_id_result | success
+      --host-route destination={{ SVC_NET_DEST }},gateway={{ SVC_NET_GATEWAY }}"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Check for existence of SVC networks
-  shell:  neutron {{ neutron_cmd_args }} net-list -f csv -c id
-          --quote none --name "{{ svc_net_name }}" --tenant-id {{ tenant_id }}
+  shell: openstack {{ openstack_cmd_args }} network list --format value -c ID
+          --name "{{ svc_net_name }}" --project {{ neutron_admin_project_name }}
   register: svcnet_list_result
   changed_when: False
   environment:
@@ -97,18 +83,18 @@
   fail:
     msg: "Multiple networks with name of {{ svc_net_name }}
           -- unable to continue."
-  when: "(svcnet_list_result.stdout_lines|length) > 2"
+  when: "(svcnet_list_result.stdout_lines|length) > 1"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Save the SVC network id
   set_fact:
-    svc_net_id: "{{ svcnet_list_result.stdout_lines[1] }}"
-  when: "(svcnet_list_result.stdout_lines|length) == 2"
+    svc_net_id: "{{ svcnet_list_result.stdout_lines[0] }}"
+  when: "(svcnet_list_result.stdout_lines|length) == 1"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | A SVC network is already created
   debug:
     msg: "An existing network named {{ svc_net_name }}
           id={{ svc_net_id }} is found -- not creating a new one."
-  when: "(svcnet_list_result.stdout_lines|length) == 2"
+  when: "(svcnet_list_result.stdout_lines|length) == 1"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Need to create a SVC Network
   set_fact:
@@ -116,8 +102,8 @@
   when: "svc_net_id|length == 0"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Create provider network
-  shell:  neutron {{ neutron_cmd_args }} net-create
-          {{ provider_net_args }} -f value -c id {{ svc_net_name }}
+  shell: openstack {{ openstack_cmd_args }} network create
+          {{ provider_net_args }} --format value -c ID {{ svc_net_name }}
   register: net_create_result
   when: do_net_create
   environment:
@@ -131,8 +117,8 @@
         net_create_result.stdout_lines|length == 2
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Check if SVC network has subnet
-  shell:  neutron subnet-list {{ neutron_cmd_args }} -f csv -c id
-          --quote none --network-id {{ svc_net_id }}
+  shell: openstack {{ openstack_cmd_args }} subnet list
+          --network {{ svc_net_name }} --format value -c ID
   register: subnet_list_result
   changed_when: False
   when: "svc_net_id|length > 0"
@@ -143,12 +129,12 @@
   fail:
     msg: "Multiple subnets for network {{ svc_net_id }} were found
           -- unable to continue."
-  when: "subnet_list_result.stdout_lines|length > 2"
+  when: "subnet_list_result.stdout_lines|length > 1"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Retrieve the id of SVC subnet
   set_fact:
-    svc_subnet_id: "{{ subnet_list_result.stdout_lines[1] }}"
-  when: "subnet_list_result.stdout_lines|length == 2"
+    svc_subnet_id: "{{ subnet_list_result.stdout_lines[0] }}"
+  when: "subnet_list_result.stdout_lines|length == 1"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Subnet is already created for SVC network
   fail:
@@ -157,8 +143,8 @@
   when: "svc_subnet_id|length > 0"
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Create the subnet for SVC network
-  shell:  neutron {{ neutron_cmd_args }} subnet-create
-          --ip_version 4 --no-gateway {{ svc_net_id }} {{ svc_subnet_args }}
+  shell: openstack {{ openstack_cmd_args }} subnet create
+          --ip-version 4 --gateway none --network {{ svc_net_id }} {{ svc_subnet_args }} {{ svc_net_name }}
   when: "svc_subnet_id|length == 0"
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"

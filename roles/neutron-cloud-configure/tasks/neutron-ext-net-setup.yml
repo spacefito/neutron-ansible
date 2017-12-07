@@ -19,7 +19,8 @@
 # NOTE: os_network does not support creating an external network so using CLI.
 
 - name: neutron-cloud-configure | neutron-ext-net-setup | check if ext-net exists
-  shell: neutron {{ neutron_cmd_args }} net-external-list
+  shell: openstack {{ openstack_cmd_args }} network list --external
+           --format value -c Name
   register: known_nets_result
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"
@@ -31,16 +32,16 @@
 
 - name: neutron-cloud-configure | neutron-ext-net-setup | Create the external networks
   shell:
-    neutron {{ neutron_cmd_args }}
-      net-create {{ item.name }}
+    openstack {{ openstack_cmd_args }} network create
       {% if item.provider is defined %}
-        --provider:network_type {{ item.provider[0].network_type }}
-        --provider:physical_network {{ item.provider[0].physical_network }}
+        --provider-network_type {{ item.provider[0].network_type }}
+        --provider-physical-network {{ item.provider[0].physical_network }}
         {% if item.provider[0].segmentation_id is defined %}
-          --provider:segmentation_id {{ item.provider[0].segmentation_id }}
+          --provider-segment {{ item.provider[0].segmentation_id }}
         {% endif %}
       {% endif %}
-      --router:external
+      --external
+      {{ item.name }}
   when: "not item.name in known_nets_result.stdout"
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"
@@ -48,8 +49,8 @@
 
 - name: neutron-cloud-configure | neutron-ext-net-setup | Create the appropriate subnets
   shell:
-    neutron {{ neutron_cmd_args }}
-      subnet-create {{ item.name }} {{ item.cidr }}
+    openstack {{ openstack_cmd_args }} subnet create
+      --network {{ item.name }} --subnet-range {{ item.cidr }}
       {% if item.allocation_pools is defined %}
         {% for pool in item.allocation_pools %}
           --allocation-pool start={{ pool.start }},end={{ pool.end }}
@@ -58,7 +59,8 @@
       {% if item.gateway is defined %}
         --gateway {{ item.gateway }}
       {% endif %}
-      --disable-dhcp
+      --no-dhcp
+      {{ item.name }}
   when: "not item.name in known_nets_result.stdout"
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"

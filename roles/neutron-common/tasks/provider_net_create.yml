@@ -27,21 +27,6 @@
   when: item.name != ''
   with_items: "{{ provider_data }}"
 
-- name: neutron-common | provider_net_create | Get tenant id
-  command: openstack {{ openstack_cmd_args }} \
-    project show -f value -c id {{ neutron_admin_project_name }}
-  register: tenant_id_result
-  changed_when: False
-  environment:
-    OS_PASSWORD: "{{ neutron_admin_password }}"
-  when: provider_nets_exist is defined
-
-- name: neutron-common | provider_net_create | Set neutron_admin_tenant_id
-  set_fact:
-    neutron_admin_tenant_id: "{{ tenant_id_result.stdout }}"
-  when: provider_nets_exist is defined and
-        tenant_id_result | success
-
 - name: neutron-common | provider_net_create | List networks owned by neutron
   include: _list_networks.yml ignore=true
   when: provider_nets_exist is defined
@@ -70,16 +55,17 @@
         item.name not in existing_nets_result.stdout
 
 - name: neutron-common | provider_net_create | List subnets owned by neutron
-  command:  neutron {{ neutron_cmd_args }} subnet-list -f csv -c name
-              --tenant-id {{ neutron_admin_tenant_id }}
+  command: openstack {{ openstack_cmd_args }} \
+    subnet list --format value -c Name \
+    --project {{ neutron_admin_project_name }}
   register: existing_subnets_result
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"
   when: provider_nets_exist is defined
 
 - name: neutron-common | provider_net_create | Create subnets
-  command: neutron {{ neutron_cmd_args }} \
-    subnet-create \
+  command: openstack {{ openstack_cmd_args }} \
+    subnet create \
     {% if item.allocation_pools is defined %}
     {% for pool in item.allocation_pools %}
       --allocation-pool start={{ pool.start }},end={{ pool.end }} \
@@ -88,33 +74,25 @@
     {% if item.host_routes is defined %}
     {% for route in item.host_routes %}
       --host-route \
-      destination={{ route.destination }},nexthop={{ route.nexthop }} \
+      destination={{ route.destination }},gateway={{ route.nexthop }} \
     {% endfor %}
     {% endif %}
     {% if item.gateway_ip is defined %}
       --gateway {{ item.gateway_ip }} \
+    {% elif item.no_gateway is defined and item.no_gateway %}
+      --gateway none \
     {% endif %}
     {% if item.enable_dhcp is defined and item.enable_dhcp %}
-      --enable-dhcp \
+      --dhcp \
     {% else %}
-      --disable-dhcp \
+      --no-dhcp \
     {% endif %}
-      --ip_version 4
-      --name {{ item.name }} \
-      {{ item.name }} \
-      {{ item.cidr }}
+      --ip-version 4 \
+      --network {{ item.name }} \
+      --subnet-range {{ item.cidr }}
+      {{ item.name }}
   when: provider_nets_exist is defined and
         item.name not in existing_subnets_result.stdout
-  with_items: "{{ provider_data }}"
-  environment:
-    OS_PASSWORD: "{{ neutron_admin_password }}"
-
-- name: neutron-common | provider_net_create | Update subnet to no-gateway
-  command:  neutron {{ neutron_cmd_args }}
-              subnet-update {{ item.name }} --no-gateway
-  when: provider_nets_exist is defined and
-        item.name not in existing_subnets_result.stdout and
-        item.no_gateway is defined and item.no_gateway
   with_items: "{{ provider_data }}"
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"

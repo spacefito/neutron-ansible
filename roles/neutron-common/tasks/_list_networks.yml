@@ -16,8 +16,9 @@
 #
 ---
 
-- command:  neutron {{ neutron_cmd_args }} net-list -f csv -c name
-              --tenant-id {{ neutron_admin_tenant_id }}
+- command: openstack {{ openstack_cmd_args }} \
+    network list --format value -c Name \
+    --project {{ neutron_admin_project_name }}
   register: existing_nets_result
   environment:
     OS_PASSWORD: "{{ neutron_admin_password }}"

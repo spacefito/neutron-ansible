@@ -58,10 +58,7 @@ openstack_cmd_args: >
   --os-project-domain-name Default
   --os-auth-url {{ keystone_auth_url }}
   --os-region-name {{ public_region }}
-
-neutron_cmd_args: >
-  {{ openstack_cmd_args }}
-  --os-endpoint-type internalURL
+  --os-interface internal
 
 extnet_data: "
   {%- if config_data is defined and config_data.NEU is defined and config_data.NEU.neutron_external_networks is defined -%}
