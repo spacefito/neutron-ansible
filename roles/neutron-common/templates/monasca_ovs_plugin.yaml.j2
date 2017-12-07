@@ -21,9 +21,9 @@
 
 init_config:
   admin_password: {{ neutron_admin_password }}
-  admin_tenant_name: {{ neutron_admin_tenant_name }}
+  admin_tenant_name: {{ neutron_admin_project_name }}
   admin_user: {{ neutron_admin_user }}
-  identity_uri: {{ neutron_identity_uri }}/v2.0
+  identity_uri: {{ neutron_auth_url }}/v2.0
   neutron_refresh: 14400
   region_name: {{ neutron_api.public_region }}
   cache_dir: /dev/shm

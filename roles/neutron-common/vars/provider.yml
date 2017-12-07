@@ -21,7 +21,7 @@
 ##
 common_cmd_args: >
   --os-username {{ neutron_admin_user }}
-  --os-project-name {{ neutron_admin_tenant_name }}
+  --os-project-name {{ neutron_admin_project_name }}
   --os-user-domain-name Default
   --os-project-domain-name Default
   --os-auth-url {{ neutron_auth_url }}

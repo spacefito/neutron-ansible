@@ -28,12 +28,12 @@ mysql:
   admin_password: "{{ NEU_SVR.consumes_FND_MDB.vars.accounts.neutron.password | quote }}"
 
 keystone:
-  admin_tenant_name: "{{ KEY_API.vars.keystone_admin_tenant }}"
-  service_tenant: "{{ KEY_API.vars.keystone_service_tenant }}"
+  admin_project_name: "{{ KEY_API.vars.keystone_admin_tenant }}"
+  service_project: "{{ KEY_API.vars.keystone_service_tenant }}"
   neutron_admin_user: "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_user }}"
   neutron_admin_password: "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_password | quote }}"
   auth_uri: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}"
-  identity_uri: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}"
+  auth_url: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}"
   endpoint: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}/v3"
   admin_user: "{{ KEY_API.vars.keystone_admin_user }}"
   admin_password: "{{ KEY_API.vars.keystone_admin_pwd | quote }}"
@@ -155,7 +155,7 @@ neutron_tunnel_types: "{%- if network_tag_values is defined -%}
                        {%- endif -%}"
 neutron_admin_user: "{{ keystone.neutron_admin_user }}"
 neutron_admin_password: "{{ keystone.neutron_admin_password }}"
-keystone_admin_tenant_name: "{{ keystone.service_tenant }}"
+keystone_admin_project_name: "{{ keystone.service_project }}"
 neutron_auth_url: "{{ keystone.auth_uri }}"
 neutron_nova_metadata_ip: "{{ nova.metadata_ip }}"
 neutron_nova_metadata_port: "{{ nova.metadata_port }}"
@@ -393,7 +393,7 @@ neutron_bind_port: "{% if host.bind.NEU_SVR is defined %}{{ host.bind.NEU_SVR.in
 ### Nova
 neutron_nova_url: "{{ NEU_SVR.consumes_NOV_API.vips.private[0].url }}/v2"
 neutron_nova_admin_username: "{{ nova.user }}"
-neutron_nova_admin_tenant_name: "{{ keystone.service_tenant }}"
+neutron_nova_admin_project_name: "{{ keystone.service_project }}"
 neutron_nova_admin_password: "{{ nova.passwd }}"
 neutron_nova_admin_auth_url: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}/v3"
 
@@ -440,11 +440,16 @@ neutron_lbaas_plugin: "{%- if verb_hosts.OCT_API is defined or verb_hosts.NEU_LB
 
 ## [keystone_authtoken]
 neutron_auth_uri: "{{ keystone.auth_uri }}"
-neutron_identity_uri: "{{ keystone.identity_uri }}"
-neutron_admin_tenant_name: "{{ keystone.service_tenant }}"
+neutron_auth_url: "{{ keystone.auth_url }}"
+neutron_admin_project_name: "{{ keystone.service_project }}"
+neutron_project_domain_name: "{{ keystone.default_domain_name }}"
+neutron_user_domain_name: "{{ keystone.default_domain_name }}"
 neutron_admin_user: "{{ keystone.neutron_admin_user }}"
 neutron_admin_password: "{{ keystone.neutron_admin_password }}"
 neutron_keystone_region_name: "{{ keystone.region_name }}"
+memcached_servers: "{% for x in NEU.consumes_FND_MEM.members.private %}{{ x.host }}:{{ x.port }}{%if
+ not loop.last %},{% endif %}{% endfor %}"
+memcache_secret_key: "{{ NEU.consumes_FND_MEM.vars.memcached.neutron.secret_key | quote }}"
 
 ## variables needed by _write_conf.yml
 write_conf_file_owner: "{{ neutron_user }}"

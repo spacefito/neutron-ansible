@@ -29,7 +29,7 @@
 
 - name: neutron-common | provider_net_create | Get tenant id
   command: openstack {{ openstack_cmd_args }} \
-    project show -f value -c id {{ neutron_admin_tenant_name }}
+    project show -f value -c id {{ neutron_admin_project_name }}
   register: tenant_id_result
   changed_when: False
   environment:

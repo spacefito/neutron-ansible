@@ -21,7 +21,7 @@
 keystone_auth_url: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}"
 neutron_admin_password:
   "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_password | quote }}"
-neutron_admin_tenant_name: "{{ KEY_API.vars.keystone_service_tenant }}"
+neutron_admin_project_name: "{{ KEY_API.vars.keystone_service_tenant }}"
 neutron_admin_user: "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_user }}"
 public_region: "{{ NEU.regions | first }}"
 
@@ -53,7 +53,7 @@ default_ext_net: "{%- set break = [] -%}
 
 openstack_cmd_args: >
   --os-username {{ neutron_admin_user }}
-  --os-project-name {{ neutron_admin_tenant_name }}
+  --os-project-name {{ neutron_admin_project_name }}
   --os-user-domain-name Default
   --os-project-domain-name Default
   --os-auth-url {{ keystone_auth_url }}

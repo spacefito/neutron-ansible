@@ -74,7 +74,7 @@
 
 - name: neutron-cloud-configure | neutron-svc-net-setup | Get the tenant id
   shell:  openstack {{ openstack_cmd_args }}
-          project show -f value -c id {{ neutron_admin_tenant_name }}
+          project show -f value -c id {{ neutron_admin_project_name }}
   register: user_id_result
   changed_when: False
   environment:

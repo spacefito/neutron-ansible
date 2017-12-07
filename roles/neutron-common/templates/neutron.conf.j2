@@ -113,12 +113,21 @@ use_helper_for_ns_read = {{ neutron_use_helper_for_ns_read }}
 
 
 [keystone_authtoken]
+auth_type = password
 auth_uri = {{ neutron_auth_uri }}
-identity_uri = {{ neutron_identity_uri }}
-admin_tenant_name = {{ neutron_admin_tenant_name }}
-admin_user = {{ neutron_admin_user }}
-admin_password = {{ neutron_admin_password }}
+auth_url = {{ neutron_auth_url }}
+project_name = {{ neutron_admin_project_name }}
+project_domain_name = {{ neutron_project_domain_name }}
+user_domain_name = {{ neutron_user_domain_name }}
+username = {{ neutron_admin_user }}
+password = {{ neutron_admin_password }}
 region_name = {{ neutron_keystone_region_name }}
+service_token_roles_required = true
+service_token_roles = admin
+memcached_servers = {{ memcached_servers }}
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcache_secret_key }}
+memcache_pool_socket_timeout = 1
 
 
 [audit_middleware_notifications]
@@ -133,7 +142,7 @@ max_pool_size = 50
 [nova]
 auth_type = v3password
 username = {{ neutron_nova_admin_username }}
-project_name = {{ neutron_nova_admin_tenant_name }}
+project_name = {{ neutron_nova_admin_project_name }}
 password = {{ neutron_nova_admin_password }}
 auth_url = {{ neutron_nova_admin_auth_url }}
 project_domain_name = Default
@@ -153,7 +162,7 @@ request_poll_timeout = 3000
 
 [service_auth]
 auth_url = {{ neutron_auth_uri }}/v3
-admin_tenant_name = {{ keystone.admin_tenant_name }}
+admin_tenant_name = {{ keystone.admin_project_name }}
 admin_user_domain = {{ keystone.default_domain_name }}
 admin_project_domain = {{ keystone.default_domain_name }}
 region = {{ neutron_api.public_region }}
