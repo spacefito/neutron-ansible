@@ -122,6 +122,7 @@ user_domain_name = {{ neutron_user_domain_name }}
 username = {{ neutron_admin_user }}
 password = {{ neutron_admin_password }}
 region_name = {{ neutron_keystone_region_name }}
+cafile = {{ neutron_cacert_file }}
 service_token_roles_required = true
 service_token_roles = admin
 memcached_servers = {{ memcached_servers }}
@@ -149,6 +150,7 @@ user_domain_name = Default
 timeout = 30
 endpoint_type = internal
 region_name = {{ neutron_nova_region_name }}
+cafile = {{ neutron_cacert_file }}
 
 [service_providers]
 {{ neutron_lbaas_providers }}

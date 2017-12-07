@@ -26,7 +26,7 @@ neutron_admin_user: "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_user }}"
 public_region: "{{ NEU.regions | first }}"
 
 # Other
-
+ca_file: "/etc/ssl/certs/ca-certificates.crt"
 EXT_NET_CIDR: "172.31.0.0/16"
 svc_net_name: "SVC"
 
@@ -59,6 +59,7 @@ openstack_cmd_args: >
   --os-auth-url {{ keystone_auth_url }}
   --os-region-name {{ public_region }}
   --os-interface internal
+  --os-cacert {{ ca_file }}
 
 extnet_data: "
   {%- if config_data is defined and config_data.NEU is defined and config_data.NEU.neutron_external_networks is defined -%}

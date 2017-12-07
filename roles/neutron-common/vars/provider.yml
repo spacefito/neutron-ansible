@@ -27,6 +27,7 @@ openstack_cmd_args: >
   --os-auth-url {{ neutron_auth_url }}
   --os-region-name {{ neutron_api.public_region }}
   --os-interface internal
+  --os-cacert {{ ca_file }}
 
 
 ##

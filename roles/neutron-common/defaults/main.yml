@@ -447,6 +447,7 @@ neutron_user_domain_name: "{{ keystone.default_domain_name }}"
 neutron_admin_user: "{{ keystone.neutron_admin_user }}"
 neutron_admin_password: "{{ keystone.neutron_admin_password }}"
 neutron_keystone_region_name: "{{ keystone.region_name }}"
+neutron_cacert_file: "{{ ca_file }}"
 memcached_servers: "{% for x in NEU.consumes_FND_MEM.members.private %}{{ x.host }}:{{ x.port }}{%if
  not loop.last %},{% endif %}{% endfor %}"
 memcache_secret_key: "{{ NEU.consumes_FND_MEM.vars.memcached.neutron.secret_key | quote }}"
