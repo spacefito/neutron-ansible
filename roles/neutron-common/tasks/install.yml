@@ -49,7 +49,7 @@
   modprobe:
     name: "{{ item }}"
     state: present
-  with_items: kernel_modules | default([])
+  with_items: neutron_kernel_modules | default([])
 
 - name: neutron-common | install | Persist kernel modules for reboot
   become: yes
@@ -59,4 +59,4 @@
     owner: root
     group: root
     mode: '0640'
-  with_items: kernel_modules | default([])
+  with_items: neutron_kernel_modules | default([])
