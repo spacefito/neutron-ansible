@@ -60,3 +60,14 @@
     group: root
     mode: '0640'
   with_items: neutron_kernel_modules | default([])
+
+- name: neutron-common | install | Set netfilter sysctl values
+  become: yes
+  sysctl:
+    name: "{{ item }}"
+    value: 1
+    state: present
+  with_items:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
+  when: "'br_netfilter' in neutron_kernel_modules | default([])"

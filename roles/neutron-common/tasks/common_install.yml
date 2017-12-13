@@ -16,6 +16,11 @@
 #
 ---
 
+- name: neutron-common | common_install |
+    Override variables for RHEL versions before 7.3
+  include_vars: redhat_pre73.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version < '7.3'
+
 - name: neutron-common | common_install | Print running neutron common install
   debug:
     msg:  "Running neutron-common common_install
