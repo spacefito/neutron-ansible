@@ -28,8 +28,10 @@ log_date_format = %Y-%m-%d %H:%M:%S
 use_syslog = False
 use_stderr = False
 log_dir = /var/log/neutron
+{% if host.bind.NEU_SVR is defined %}
 bind_host = {{ neutron_bind_host }}
 bind_port = 9696
+{% endif %}
 core_plugin = {{ neutron_core_plugin }}
 service_plugins = {{ neutron_service_plugins }}
 api_paste_config = api-paste.ini
