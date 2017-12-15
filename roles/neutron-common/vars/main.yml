@@ -16,7 +16,7 @@
 #
 ---
 
-kernel_modules:
+neutron_kernel_modules:
   - nf_conntrack_ipv4
   - nf_conntrack_ipv6
   - ip6table_raw
