@@ -399,17 +399,19 @@ neutron_nova_admin_auth_url: "{{ NEU_SVR.consumes_KEY_API.vips.private[0].url }}
 
 ### RabbitMQ
 neutron_rpc_backend: "rabbit"
-neutron_rabbit_hosts: >-
-  {%- set rmq_hosts = [] -%}
-  {%- for x in NEU | item('consumes_FND_RMQ.members.private', default=[]) -%}
-     {%- set v = [x | item('host', default=' '), x | item('port', default=' ')] -%}
-     {%- do rmq_hosts.append(v | join(':')) -%}
-  {%- endfor -%}
-  {{ rmq_hosts }}
 neutron_rabbit_username: "{{ rabbit.username }}"
 neutron_rabbit_password: "{{ rabbit.passwd }}"
+neutron_rabbit_hosts: >-
+  {%- set rmq_hosts = [] -%}
+  {%- set cred = [neutron_rabbit_username, neutron_rabbit_password] -%}
+  {%- for x in NEU | item('consumes_FND_RMQ.members.private', default=[]) -%}
+     {%- set v = [x | item('host', default=' '), x | item('port', default=' ')] -%}
+     {%- set w = [cred | join(':'), v | join(':') ] -%}
+     {%- do rmq_hosts.append(w | join('@')) -%}
+  {%- endfor -%}
+  {{ rmq_hosts | join(',') }}
 neutron_rabbit_use_ssl:  "{{ rabbit.use_ssl }}"
-neutron_transport_url: "{{ neutron_rpc_backend }}://{{  neutron_rabbit_username }}:{{ neutron_rabbit_password }}@{{ neutron_rabbit_hosts | first }}//"
+neutron_transport_url: "{{ neutron_rpc_backend }}://{{ neutron_rabbit_hosts }}/"
 
 ## [AGENT]
 neutron_use_helper_for_ns_read: "False"
