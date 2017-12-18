@@ -197,19 +197,6 @@ ovsvapp_security_bridge_mapping: "{%- if host.my_network_tags is defined -%}
                                           {%- endif -%}
                                       {%- endfor -%}
                                   {%- endif -%}"
-ovsvapp_monitoring_ip: "{%- if host.my_network_tags is defined -%}
-                            {%- for network_tag in host.my_network_tags -%}
-                                {%- if network_tag.tags is defined -%}
-                                    {%- for tag in network_tag.tags -%}
-                                        {%- if tag.tag is defined -%}
-                                            {%- if tag.tag == 'neutron.ovsvapp.management_if' -%}
-                                                {{ network_tag.address }}
-                                            {%- endif -%}
-                                        {%- endif -%}
-                                    {%- endfor -%}
-                                {%- endif -%}
-                            {%- endfor -%}
-                        {%- endif -%}"
 ovsvapp_mgmt_device: "{%- if host.my_network_tags is defined -%}
                           {%- for network_tag in host.my_network_tags -%}
                               {%- if network_tag.tags is defined -%}
@@ -228,7 +215,7 @@ vlan_tag_present: "{%- if host.my_network_tags is defined -%}
                            {%- if network_tag.tags is defined -%}
                                {%- for tag in network_tag.tags -%}
                                    {%- if tag.tag is defined -%}
-                                       {%- if tag.tag == 'neutron.networks.vlan' and network_tag.address == ovsvapp_monitoring_ip -%}
+                                       {%- if tag.tag == 'neutron.networks.vlan' -%}
                                            {{ 'True' }}
                                        {%- endif -%}
                                    {%- endif -%}
@@ -471,33 +458,6 @@ config_file_option: ''
 
 ml2_conf_write_result: false
 
-
-# keystone related conf to get vcenter password from EON
-eon_admin_tenant_name: "{%- if KEY_API is defined -%}
-                            {%- if KEY_API.vars is defined -%}
-                                {%- if KEY_API.vars.keystone_service_tenant is defined -%}
-                                    {{ KEY_API.vars.keystone_service_tenant }}
-                                {%- endif -%}
-                            {%- endif -%}
-                        {%- endif -%}"
-eon_admin_password: "{%- if EON_API is defined -%}
-                         {%- if EON_API.consumes_KEY_API is defined -%}
-                             {%- if EON_API.consumes_KEY_API.vars is defined -%}
-                                 {%- if EON_API.consumes_KEY_API.vars.keystone_eon_password is defined -%}
-                                     {{ EON_API.consumes_KEY_API.vars.keystone_eon_password | quote }}
-                                 {%- endif -%}
-                             {%- endif -%}
-                         {%- endif -%}
-                     {%- endif -%}"
-eon_admin_user: "{%- if EON_API is defined -%}
-                     {%- if EON_API.consumes_KEY_API is defined -%}
-                         {%- if EON_API.consumes_KEY_API.vars is defined -%}
-                             {%- if EON_API.consumes_KEY_API.vars.keystone_eon_user is defined -%}
-                                 {{ EON_API.consumes_KEY_API.vars.keystone_eon_user }}
-                             {%- endif -%}
-                         {%- endif -%}
-                     {%- endif -%}
-                 {%- endif -%}"
 
 qos_who: "{%- if not (config_data | item('NEU.qos_trusted', default=false)) -%}
              admin_only

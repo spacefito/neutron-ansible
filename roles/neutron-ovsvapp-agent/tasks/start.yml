@@ -40,25 +40,3 @@
   until: of_dump_result.stderr.find("br-int is not a bridge or a socket")== -1
   retries: 20
   delay: 0.5
-
-- name: neutron-ovsvapp-agent | start | Start the neutron-ovsvapp-agent-monitor
-  become: yes
-  service:
-    name: neutron-ovsvapp-agent-monitor
-    state: started
-    enabled: yes
-
-- name: neutron-ovsvapp-agent | start | Start the nginx server
-  become: yes
-  service:
-    name: nginx
-    state: started
-    enabled: yes
-
-- name: neutron-ovsvapp-agent | start | Restart the nginx server
-  become: yes
-  service:
-    name: nginx
-    state: restarted
-  when: ardana_notify_nginx_restart_required is defined and
-        ardana_notify_nginx_restart_required.changed

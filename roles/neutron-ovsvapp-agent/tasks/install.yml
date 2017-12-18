@@ -22,8 +22,3 @@
   command: /bin/true
   register: ardana_notify_neutron_ovsvapp_agent_restart_required
   when: check_updated_packages_result.changed
-
-- name: neutron-ovsvapp-agent | install | Notify nginx of package update
-  command: /bin/true
-  register: ardana_notify_nginx_restart_required
-  when: check_updated_packages_result.changed

@@ -34,7 +34,7 @@ wsdl_location = https://{{ vc.ip }}:{{ vc.port }}/sdk/vimService.wsdl
 {% endif %}
 {% endfor %}
 {% endif %}
-vcenter_password = {{ vmware_host_password }}
+vcenter_password = {{ vcenter_encrypted_password | openstack_user_password_decrypt }}
 vcenter_api_retry_count = 2
 cluster_dvs_mapping = {{ vcenter_cluster_dvs_mapping }}
 # Example:
@@ -59,7 +59,6 @@ integration_bridge = br-int
 bridge_mappings = {{ ovsvapp_bridge_mappings }}
 #Example:
 #bridge_mappings = physnet1:br-eth1
-monitoring_ip = {{ ovsvapp_monitoring_ip }}
 {{ neutron_local_ip|trim }}
 
 [securitygroup]

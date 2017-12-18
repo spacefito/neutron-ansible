@@ -21,9 +21,3 @@
   service:
     name: neutron-ovsvapp-agent
     state: stopped
-
-- name: neutron-ovsvapp-agent | stop | Stop the neutron-ovsvapp-agent-monitor
-  become: yes
-  service:
-    name: neutron-ovsvapp-agent-monitor
-    state: stopped

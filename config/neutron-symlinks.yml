@@ -43,8 +43,6 @@ symlinks:
   "neutron/vpn_agent.ini.j2": "roles/neutron-common/templates/vpn_agent.ini.j2"
   "neutron/vpn-agent-logging.conf.j2": "roles/neutron-common/templates/vpn-agent-logging.conf.j2"
   "neutron/policy.json.j2": "roles/neutron-common/templates/policy.json.j2"
-  "neutron/neutron-ovsvapp-agent-monitor.service.j2": "roles/neutron-common/templates/neutron-ovsvapp-agent-monitor.service.j2"
-  "neutron/nginx-default.j2": "roles/neutron-common/templates/nginx-default.j2"
   "neutron/infoblox-ipam-agent.ini.j2": "roles/neutron-common/templates/infoblox-ipam-agent.ini.j2"
   "neutron/ml2_conf_sriov.ini.j2": "roles/neutron-common/templates/ml2_conf_sriov.ini.j2"
   "neutron/ml2_conf_sriov_agent.ini.j2": "roles/neutron-common/templates/ml2_conf_sriov_agent.ini.j2"

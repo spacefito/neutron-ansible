@@ -1,6 +1,5 @@
-{#
 #
-# (c) Copyright 2015 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2017 Hewlett Packard Enterprise Development LP
 # (c) Copyright 2017 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -14,18 +13,12 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-#
-#}
-server{
-        listen 8080 default_server;
-        listen [::]:8080 default_server ipv6only=on;
 
-        root /usr/share/nginx/html;
-        index index.html index.htm;
+# Contains packages needed by all neutron roles, specific to SUSE Systems
+---
+# packages listed here will be installed by neutron-common | install
+required_packages:
+  - openvswitch
+  - iproute2
 
-        location ~ \.(json) {
-            root {{ neutron_log_dir }}/ovsvapp-agent/;
-            allow   {{ ovsvapp_mgmt_subnet }};
-            deny    all;
-        }
-}
+ovs_dpdk_enabled: False
