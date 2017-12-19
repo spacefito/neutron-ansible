@@ -380,6 +380,12 @@ l2gw_playbook_caller: ""
 
 # neutron.conf
 ## [DEFAULT]
+
+neutron_max_workers: 10
+neutron_api_workers: "{{ ansible_processor_count * ansible_processor_cores * 2 | default('{{ neutron_max_workers }}') }}"
+neutron_rpc_workers: "{{ ansible_processor_count * ansible_processor_cores * 2 | default('{{ neutron_max_workers }}') }}"
+neutron_metadata_workers: "{{ ansible_processor_count * ansible_processor_cores * 2 | default('{{ neutron_max_workers }}') }}"
+
 ### API
 neutron_bind_host: "{% if host.bind.NEU_SVR is defined %}{{ host.bind.NEU_SVR.internal.ip_address }}{% endif %}"
 neutron_bind_port: "{% if host.bind.NEU_SVR is defined %}{{ host.bind.NEU_SVR.internal.port }}{% else %}9696{% endif %}"

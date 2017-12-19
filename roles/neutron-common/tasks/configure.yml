@@ -19,6 +19,24 @@
 # This .yml sets all facts related to neutron_conf_dir and neutron_bin_dir
 - include: _set_service_directories.yml
 
+- name: neutron-common | configure | Set max api worker count to neutron_max_workers if dynamic
+    CPU based count is greater than {{ neutron_max_workers }}
+  set_fact:
+    neutron_api_workers: "{{ neutron_max_workers }}"
+  when: neutron_api_workers|int > neutron_max_workers|int
+
+- name: neutron-common | configure | Set max rpc worker count to neutron_max_workers if dynamic
+    CPU based count is greater than {{ neutron_max_workers }}
+  set_fact:
+    neutron_rpc_workers: "{{ neutron_max_workers }}"
+  when: neutron_rpc_workers|int > neutron_max_workers|int
+
+- name: neutron-common | configure | Set max metadata worker count to neutron_max_workers if dynamic
+    CPU based count is greater than {{ neutron_max_workers }}
+  set_fact:
+    neutron_metadata_workers: "{{ neutron_max_workers }}"
+  when: neutron_metadata_workers|int > neutron_max_workers|int
+
 - name: neutron-common | configure | include pci vars
   include_vars: pci.yml
   when: network_device_types is defined

@@ -22,7 +22,7 @@
 [DEFAULT]
 log_config_append = {{ neutron_metadata_agent_logging_config_file }}
 metadata_backlog = 4096
-metadata_workers = 10
+metadata_workers = {{ neutron_metadata_workers }}
 admin_user = {{ neutron_admin_user }}
 admin_password = {{ neutron_admin_password }}
 admin_tenant_name = {{ keystone_admin_tenant_name }}
