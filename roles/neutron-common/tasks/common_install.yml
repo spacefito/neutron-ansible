@@ -17,9 +17,15 @@
 ---
 
 - name: neutron-common | common_install |
-    Override variables for RHEL versions before 7.3
+    Keep first 3 components of RHEL kernel version
+  set_fact:
+    rh_kern_ver: "{{ ansible_kernel.split('.')[:3] | join('.') }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: neutron-common | common_install |
+    Override variables for RHEL kernel versions before 3.10.0-514
   include_vars: redhat_pre73.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version < '7.3'
+  when: "ansible_os_family == 'RedHat' and rh_kern_ver | version_compare('3.10.0-514', operator='lt')"
 
 - name: neutron-common | common_install | Print running neutron common install
   debug:
