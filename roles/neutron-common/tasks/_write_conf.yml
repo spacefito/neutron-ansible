@@ -31,6 +31,8 @@
 
 - name: "neutron-common | _write_conf | Template {{ dest }}"
   become: yes
+  environment:
+    ARDANA_USER_PASSWORD_ENCRYPT_KEY: "{{ neutron_decrypt_key }}"
   template:
     src: "{{ src }}"
     dest: "{{ neutron_conf_dir }}/{{ dest }}"

@@ -19,6 +19,10 @@
 # This .yml sets all facts related to neutron_conf_dir and neutron_bin_dir
 - include: _set_service_directories.yml
 
+- name: neutron-common | configure | pass neutron_decrypt_key to host
+  set_fact:
+    neutron_decrypt_key: "{{ hostvars['localhost']['neutron_decrypt_key'] }}"
+
 - name: neutron-common | configure | Set max api worker count to neutron_max_workers if dynamic
     CPU based count is greater than {{ neutron_max_workers }}
   set_fact:
