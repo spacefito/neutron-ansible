@@ -15,6 +15,12 @@
 # under the License.
 #
 ---
+- hosts: localhost
+  roles:
+    - neutron-common
+  tasks:
+    - include: roles/neutron-common/tasks/_getkey.yml
+
 - hosts: "NEU-DHCP:NEU-L3A:NEU-LBAV*:NEU-MDA:NEU-OVS:\
           NEU-SVR:NEU-VPNA:NEU-L2GWA:NEU-IFBLXA:NEU-SRIOV:NEU-OVSVAPP"
   roles:
