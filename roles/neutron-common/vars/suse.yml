@@ -22,4 +22,20 @@ required_packages:
   - iptables
   - iputils
 
-ovs_dpdk_enabled: False
+ovs_dpdk_enabled: "
+  {% set temp_list = [] %}
+    {%- if dpdk_network_devices is defined -%}
+      {%- if dpdk_network_devices.FND_OVS is defined -%}
+        {%- if dpdk_network_devices.FND_OVS.devices is defined -%}
+          {%- for device in dpdk_network_devices.FND_OVS.devices -%}
+            {%- if temp_list.append( device ) -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if temp_list != [] -%}
+      {% set result = True %}
+    {% else %}
+      {% set result = False %}
+    {%- endif -%}
+    {{ result }}"

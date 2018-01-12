@@ -82,11 +82,18 @@
   register:  ardana_notify_neutron_restart_required
   when: write_conf_result.changed==true
 
-- name: neutron-common | configure | Set datapath_type for dpdk
+- name: neutron-common | configure | Debian - Set datapath_type for dpdk
   set_fact:
     neutron_ovs_datapath_type: "netdev"
   when:
     ansible_os_family == 'Debian' and ansible_processor[0] == 'GenuineIntel' and
+    ('NOV-KVM' in group.services and {{ ovs_dpdk_enabled }})
+
+- name: neutron-common | configure | Suse - Set datapath_type for dpdk
+  set_fact:
+    neutron_ovs_datapath_type: "netdev"
+  when:
+    ansible_os_family == 'Suse' and ansible_processor[0] == 'GenuineIntel' and
     ('NOV-KVM' in group.services and {{ ovs_dpdk_enabled }})
 
 # Render the configuration files specified in the "provides-data" data,
