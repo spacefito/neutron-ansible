@@ -32,7 +32,7 @@
     path: /var/lib/neutron
     owner: "{{ neutron_user }}"
     group: "{{ neutron_group }}"
-    mode: 0775
+    mode: 0770
     state: directory
 
 # Note this also sets the ownership and mode if the directory already exists.
