@@ -24,5 +24,5 @@ neutron_kernel_modules:
   - bridge
   - br_netfilter
 
-systemd_service_dir: /usr/lib/systemd/system/
+systemd_service_dir: /etc/systemd/system/
 neutron_common_rundir_service: neutron-common-rundir.service

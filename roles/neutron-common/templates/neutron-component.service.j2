@@ -31,4 +31,7 @@ RestartSec={{ restart_hold }}
 
 [Install]
 WantedBy=multi-user.target
+{# we only want an Alias if the .service does not have the same name already #}
+{% if neutron_service_cmd != neutron_component_file %}
 Alias={{ neutron_service_cmd }}.service
+{% endif %}
