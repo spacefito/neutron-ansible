@@ -1,0 +1,45 @@
+#
+# (c) Copyright 2018 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# Run on a machine with networking-vsphere project libraries installed.
+
+---
+
+- name: neutron-common | _create_ovsvapp_network_resources | read resource file
+  set_fact:
+    json: "{{ lookup('file', resource_file_path) | from_json }}"
+
+- name: neutron-common | _create_ovsvapp_network_resources | Create DVS
+  ovsvapp_create_network_resources:
+    resource_type: "DistributedVirtualSwitch"
+    vcenter_user: "{{ vc_user }}"
+    vcenter_password: "{{ vc_password }}"
+    vcenter_ip: "{{ vc_ip }}"
+    vcenter_port: "{{ vcenter_port|default(443) }}"
+    datacenter_name: "{{ json.datacenter_name }}"
+    host_names: "{{ json.host_names }}"
+    resource_config: "{{ item }}"
+  with_items: "{{ json.network_properties.switches|default([]) }}"
+
+- name: neutron-common | neutron_ovsvapp_create_network_resources | Create DVPGs
+  ovsvapp_create_network_resources:
+    resource_type: "DistributedVirtualPortgroup"
+    vcenter_user: "{{ vc_user }}"
+    vcenter_password: "{{ vc_password }}"
+    vcenter_ip: "{{ vc_ip }}"
+    vcenter_port: "{{ vc_port|default(443) }}"
+    resource_config: "{{ item }}"
+  with_items: "{{ json.network_properties.portGroups|default([]) }}"
+
