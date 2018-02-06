@@ -15,4 +15,4 @@
 # under the License.
 #
 
-systemd_service_dir: /usr/lib/systemd/system/
+systemd_service_dir: /etc/systemd/system/

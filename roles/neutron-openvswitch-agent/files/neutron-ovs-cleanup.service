@@ -32,4 +32,3 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
-Alias=neutron-ovs-cleanup.service
