@@ -19,3 +19,4 @@
 # packages listed here will be installed by neutron-common | install
 required_packages:
   - haproxy
+  - python-PrettyTable
