@@ -17,16 +17,19 @@
 
 ---
 
+- name: neutron-common | _create_ovsvapp_network_resources | include var files
+  include_vars: ../vars/neutron_ovsvapp_resources.yml
+
 - name: neutron-common | _create_ovsvapp_network_resources | read resource file
   set_fact:
-    json: "{{ lookup('file', resource_file_path) | from_json }}"
+    json: "{{ lookup('file', vc_net_resources_location) | from_json }}"
 
 - name: neutron-common | _create_ovsvapp_network_resources | Create DVS
   ovsvapp_create_network_resources:
     resource_type: "DistributedVirtualSwitch"
-    vcenter_user: "{{ vc_user }}"
-    vcenter_password: "{{ vc_password }}"
-    vcenter_ip: "{{ vc_ip }}"
+    vcenter_user: "{{ vcenter_username }}"
+    vcenter_password: "{{ vcenter_encrypted_password }}"
+    vcenter_ip: "{{ vcenter_ip }}"
     vcenter_port: "{{ vcenter_port|default(443) }}"
     datacenter_name: "{{ json.datacenter_name }}"
     host_names: "{{ json.host_names }}"
@@ -36,10 +39,9 @@
 - name: neutron-common | neutron_ovsvapp_create_network_resources | Create DVPGs
   ovsvapp_create_network_resources:
     resource_type: "DistributedVirtualPortgroup"
-    vcenter_user: "{{ vc_user }}"
-    vcenter_password: "{{ vc_password }}"
-    vcenter_ip: "{{ vc_ip }}"
-    vcenter_port: "{{ vc_port|default(443) }}"
+    vcenter_user: "{{ vcenter_username }}"
+    vcenter_password: "{{ vcenter_encrypted_password }}"
+    vcenter_ip: "{{ vcenter_ip }}"
+    vcenter_port: "{{ vcenter_port|default(443) }}"
     resource_config: "{{ item }}"
   with_items: "{{ json.network_properties.portGroups|default([]) }}"
-
