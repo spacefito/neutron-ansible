@@ -18,6 +18,7 @@
 ---
 # packages listed here will be installed by neutron-common | install
 required_packages:
+  - ebtables
   - ipset
   - iptables
   - iputils
