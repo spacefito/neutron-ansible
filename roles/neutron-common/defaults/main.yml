@@ -153,10 +153,7 @@ neutron_tunnel_types: "{%- if network_tag_values is defined -%}
                                {%- endfor -%}
                            {%- endif -%}
                        {%- endif -%}"
-neutron_admin_user: "{{ keystone.neutron_admin_user }}"
-neutron_admin_password: "{{ keystone.neutron_admin_password }}"
 keystone_admin_project_name: "{{ keystone.service_project }}"
-neutron_auth_url: "{{ keystone.auth_uri }}"
 neutron_nova_metadata_ip: "{{ nova.metadata_ip }}"
 neutron_nova_metadata_port: "{{ nova.metadata_port }}"
 neutron_nova_metadata_protocol: "{{ nova.metadata_protocol }}"
