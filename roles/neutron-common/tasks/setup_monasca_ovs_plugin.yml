@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -23,8 +23,8 @@
   template:
     dest: "{{ monasca_conf_dir }}/agent/conf.d/ovs.yaml"
     src: monasca_ovs_plugin.yaml.j2
-    owner: mon-agent
-    group: mon-agent
+    owner: "{{ monasca_agent_user_name }}"
+    group: "{{ monasca_agent_group_name }}"
     mode: 0640
   register: ardana_notify_monasca_agent_restart_required
   when: monasca_agent_ovs_plugin_enabled
@@ -39,6 +39,9 @@
 
 - name: neutron-common | setup_monasca_ovs_plugin | Restart monasca agent service
   become: yes
-  service: name=monasca-agent state=restarted enabled=yes
+  service:
+    name: "{{ monasca_agent_service_name }}"
+    state: restarted
+    enabled: yes
   when: ardana_notify_monasca_agent_restart_required is defined and
         ardana_notify_monasca_agent_restart_required.changed

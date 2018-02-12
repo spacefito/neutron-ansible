@@ -446,6 +446,12 @@ neutron_kernel_module_file: /etc/modules-load.d/ardana_neutron-modules.conf
 
 monasca_agent_plugin_args: ""
 
+monasca_agent_service_name: "{%- if  deployer_media_legacy_layout|bool -%}
+                                monasca-agent
+                             {%- else -%}
+                                openstack-monasca-agent
+                             {%- endif -%}"
+
 ## variables needed for PCI
 sriov_mech_driver: ''
 phys_dev_mappings: ''
