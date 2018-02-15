@@ -57,7 +57,7 @@ the vCenter server.
     not server certificate check should be skipped when making connections to
     the vCenter server.
 
-- **global.vmware.network_resources_config**: path to a text file in json
+- **global.vmware.vc_net_resources**: path to a text file in json
     format which describes the network resources to be created on the vCenter
     server.
 
