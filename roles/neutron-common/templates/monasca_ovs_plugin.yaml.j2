@@ -1,7 +1,7 @@
 {#
 #
 # (c) Copyright 2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -20,10 +20,11 @@
 # Changes may be made to this file by customers.
 
 init_config:
-  admin_password: {{ neutron_admin_password }}
-  admin_tenant_name: {{ neutron_admin_project_name }}
-  admin_user: {{ neutron_admin_user }}
-  identity_uri: {{ neutron_auth_url }}/v2.0
+  password: {{ neutron_admin_password }}
+  project_name: {{ neutron_admin_project_name }}
+  username: {{ neutron_admin_user }}
+  auth_url: {{ neutron_auth_url }}
+  endpoint_type: admin
   neutron_refresh: 14400
   region_name: {{ neutron_api.public_region }}
   cache_dir: /dev/shm
