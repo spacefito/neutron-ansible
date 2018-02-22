@@ -18,16 +18,6 @@
 # common_install installs dependencies based on ansible_os_family vars
 - include: ../../neutron-common/tasks/common_install.yml
 
-- name: neutron-lbaasv2-agent | install | Get haproxy version
-  command:  /usr/sbin/haproxy -v |
-              awk 'NR==1{split($3,ver,"."); print ver[1]""ver[2]+0}'
-  register: haproxy_version_result
-
-- name: neutron-lbaasv2-agent | install | Validate haproxy version
-  fail:
-    msg: "Haproxy version should be atleast 1.5.0"
-  when: haproxy_version_result < 15
-
 - name: neutron-lbaasv2-agent | install | Notify restart on package update
   command: /bin/true
   register: ardana_notify_neutron_lbaasv2_agent_restart_required
