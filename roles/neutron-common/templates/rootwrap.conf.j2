@@ -1,7 +1,7 @@
 {#
 #
 # (c) Copyright 2015 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -29,7 +29,7 @@ filters_path={{ neutron_conf_dir }}/rootwrap.d
 # explicitely specify a full path (separated by ',')
 # If not specified, defaults to system PATH environment variable.
 # These directories MUST all be only writeable by root !
-exec_dirs=/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin,{{ neutron_bin_dir }}
+exec_dirs={{ neutron_bin_dir }},/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin
 
 # Enable logging to syslog
 # Default value is False
