@@ -33,21 +33,15 @@
             for {{ neutron_component | default('neutron-common') }}"
   run_once: true
 
-- name: neutron-common | common_install | Debian - Install packages
+- name: neutron-common | common_install | Install packages
   become: yes
-  apt: name={{ item }} install_recommends=no state=latest force=yes
+  package:
+    name: "{{ item }}"
+    state: present
   with_items:
     required_packages | default([])
-  when: ansible_os_family == 'Debian'
 
-- name: neutron-common | common_install | RedHat - Install packages
-  become: yes
-  yum: name={{ item }} state=latest
-  with_items:
-    required_packages | default([])
-  when: ansible_os_family == 'RedHat'
-
-- name: Neutron Common | common_install | RedHat - Start openvswitch
+- name: Neutron Common | common_install | Start openvswitch
   become: yes
   service:
     name: "{{ item }}"
@@ -56,8 +50,8 @@
   with_items:
     required_packages | default([])
   when:
-    ansible_os_family == 'RedHat' and
-    item == 'openvswitch'
+    item == 'openvswitch' and
+      (ansible_os_family == 'RedHat' or ansible_os_family == 'Suse')
 
 - name: neutron-common | common_install | RedHat - copy policy file
   become: yes
@@ -76,25 +70,6 @@
   shell: semodule -i /tmp/ovsdbserver-selinux-policy.pp
   when:
     ansible_os_family == 'RedHat'
-
-- name: neutron-common | common_install | SUSE - Install packages
-  become: yes
-  zypper: name={{ item }} state=latest
-  with_items:
-    required_packages | default([])
-  when: ansible_os_family == 'Suse'
-
-- name: Neutron Common | common_install | SUSE - Start openvswitch
-  become: yes
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  with_items:
-    required_packages | default([])
-  when:
-    ansible_os_family == 'Suse' and
-    item == 'openvswitch'
 
 # Iterate through current pkg-updates-all fact (from CP) for packages relevant
 # to service component.
