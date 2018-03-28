@@ -41,7 +41,7 @@
   with_items:
     required_packages | default([])
 
-- name: Neutron Common | common_install | Start openvswitch
+- name: neutron-common | common_install | Start openvswitch
   become: yes
   service:
     name: "{{ item }}"
