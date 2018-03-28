@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015,2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -26,7 +26,7 @@ neutron_admin_user: "{{ NEU_SVR.consumes_KEY_API.vars.keystone_neutron_user }}"
 public_region: "{{ NEU.regions | first }}"
 
 # Other
-ca_file: "/etc/ssl/certs/ca-certificates.crt"
+ca_file: "{{ trusted_ca_bundle }}"
 EXT_NET_CIDR: "172.31.0.0/16"
 svc_net_name: "SVC"
 
