@@ -14,6 +14,7 @@
 # under the License.
 #
 ---
-- include: _neutron-schedule-restart.yml
-
-- include: neutron-start.yml
+# Schedule a restart of all neutron services using ardana_notify_... variables
+- hosts: all
+  tasks:
+    - include: roles/neutron-common/tasks/_schedule_restart.yml

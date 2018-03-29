@@ -14,6 +14,8 @@
 # under the License.
 #
 ---
-- include: _neutron-schedule-restart.yml
-
-- include: neutron-start.yml
+- name: neutron-common | _schedule_restart | Schedule a restart for all services
+  debug:
+    msg: "Trigger a change notification in neutron"
+  changed_when: true
+  register: ardana_notify_neutron_restart_required
