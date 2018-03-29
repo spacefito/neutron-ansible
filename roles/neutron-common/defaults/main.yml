@@ -19,7 +19,7 @@
 # Config Processor defined variables
 
 # variables needed for TLS
-ca_file: "/etc/ssl/certs/ca-certificates.crt"
+ca_file: "{{ trusted_ca_bundle }}"
 
 mysql:
   db_ssl: "{% if NEU_SVR.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ ca_file }}{% endif %}"
