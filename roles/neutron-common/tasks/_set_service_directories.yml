@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2017 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -16,7 +16,8 @@
 #
 ---
 
-- name: neutron-common | _set_service_directories | Set main configuration and bin directories - configure
+- name: neutron-common | _set_service_directories |
+    Set main configuration and bin directories - configure
   set_fact:
     neutron_conf_dir:
       "{{ 'neutron' | config_dir(neutron_install_result.version) }}"
@@ -24,13 +25,15 @@
       "{{ 'neutron' | bin_dir(neutron_install_result.version) }}"
   when: neutron_install_result.version is defined
 
-- name: neutron-common | _set_service_directories | Set main configuration and bin directories - reconfigure
+- name: neutron-common | _set_service_directories |
+    Set main configuration and bin directories - reconfigure
   set_fact:
     neutron_conf_dir: "{{ 'neutron' | config_dir() }}"
     neutron_bin_dir: "{{ 'neutron' | bin_dir() }}"
   when: neutron_install_result.version is undefined
 
-- name: neutron-common | _set_service_directories | Set service directories and configuration files
+- name: neutron-common | _set_service_directories |
+    Set service directories and configuration files
   set_fact:
     neutron_rootwrap_filters_dir: "{{ neutron_conf_dir }}/rootwrap.d"
     neutron_policy_json_dir: "{{ neutron_conf_dir }}/policy.d"
@@ -71,7 +74,8 @@
     neutron_conf_symlink_dir:
       "/etc/neutron"
 
-- name: neutron-common | _set_service_directories | Set service directories and configuration files
+- name: neutron-common | _set_service_directories |
+    Set service directories and configuration files
   set_fact:
     neutron_dnsmasq_config_file:
       "{{ neutron_dnsmasq_conf_dir }}/{{ neutron_dnsmasq_opts_file }}"
