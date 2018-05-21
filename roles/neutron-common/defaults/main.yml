@@ -475,3 +475,7 @@ neutron_external_dns_driver: >-
         external_dns_driver = {{ ext_dns_driver_list | last }}
     {%- endif -%}
 dns_domain: "{{ config_data | item('DES.dns_domain', default='openstacklocal') }}"
+
+ovs_ssh_poll_delay: 2
+ovs_ssh_timeout: 60
+ovs_ssh_connect_timeout: 5
