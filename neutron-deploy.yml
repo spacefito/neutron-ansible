@@ -52,6 +52,7 @@
   - neutron-post-configure
   tasks:
   - include: roles/neutron-post-configure/tasks/db_configure.yml
+  - include: roles/neutron-post-configure/tasks/ovsvapp_db_configure.yml
 
 - hosts: NEU-SVR
   roles:
