@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -36,6 +36,14 @@
     - include: roles/neutron-post-configure/tasks/keystone_conf.yml
       ansible_python_interpreter:
         "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+
+- hosts: NEU-SVR--first-member
+  roles:
+  - neutron-common
+  - neutron-post-configure
+  tasks:
+  - include: roles/neutron-common/tasks/start.yml
+  - include: roles/neutron-post-configure/tasks/ovsvapp_db_configure.yml
 
 # Restart services based on notifications set earlier
 - include: neutron-start.yml
