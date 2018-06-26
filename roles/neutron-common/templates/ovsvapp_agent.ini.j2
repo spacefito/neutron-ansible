@@ -67,3 +67,6 @@ security_bridge_mapping = {{ ovsvapp_security_bridge_mapping }}
 #security_bridge_mapping = br-sec:eth0
 #firewall_driver=neutron.agent.firewall.NoopFirewallDriver
 firewall_driver=networking_vsphere.drivers.ovs_firewall.OVSFirewallDriver
+
+[OVS]
+ovsdb_interface = vsctl
