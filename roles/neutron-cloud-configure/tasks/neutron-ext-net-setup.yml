@@ -34,7 +34,7 @@
   shell:
     openstack {{ openstack_cmd_args }} network create
       {% if item.provider is defined %}
-        --provider-network_type {{ item.provider[0].network_type }}
+        --provider-network-type {{ item.provider[0].network_type }}
         --provider-physical-network {{ item.provider[0].physical_network }}
         {% if item.provider[0].segmentation_id is defined %}
           --provider-segment {{ item.provider[0].segmentation_id }}
