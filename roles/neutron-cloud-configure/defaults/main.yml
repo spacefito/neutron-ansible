@@ -60,6 +60,7 @@ openstack_cmd_args: >
   --os-region-name {{ public_region }}
   --os-interface internal
   --os-cacert {{ ca_file }}
+  --os-identity-api-version 3
 
 extnet_data: "
   {%- if config_data is defined and config_data.NEU is defined and config_data.NEU.neutron_external_networks is defined -%}
