@@ -347,6 +347,11 @@ neutron_l3_agent_external_network_bridge: "{% if host.my_network_tags is defined
 # neutron-dhcp-agent
 ## [DEFAULT]
 neutron_enable_isolated_metadata: "True"
+default_dhcp_driver: "neutron.agent.linux.dhcp.Dnsmasq"
+neutron_dhcp_driver: "
+    {%  set dd_list = NEU_DHCP | get_provided_data_values('dhcp_driver') %}
+    {%- do dd_list.append(default_dhcp_driver) -%}
+    {{ dd_list | first }}"
 
 # neutron-l2gw-agent
 ## [ovsdb]
