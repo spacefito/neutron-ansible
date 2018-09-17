@@ -282,6 +282,12 @@ neutron_core_plugin: >
 neutron_service_plugins: >
     {{ NEU_SVR | get_provided_data_values('service_plugins') | unique | join(',') }}
 
+default_policy_json: 'roles/neutron-common/templates/policy.json.j2'
+neutron_server_std_policy_json_j2: "
+   {%- set spjj_list = NEU_SVR | get_provided_data_values('std_policy_json_j2') -%}
+   {%- do spjj_list.append(default_policy_json) -%}
+   {{ spjj_list | unique | first }}"
+
 neutron_server_policy_json: >
     {{ NEU_SVR | get_provided_data_values('policy_json') | unique }}
 
