@@ -17,7 +17,7 @@
 ---
 
 - include: ../../neutron-common/tasks/create_systemd_service.yml
-  neutron_service_cmd: "neutron-vpn-agent"
+  neutron_service_cmd: "neutron-l3-agent"
   neutron_service_cmd_args:
     "--config-file={{ neutron_conf_dir }}/l3_agent.ini
     --config-file={{ neutron_conf_dir }}/fwaas_driver.ini

@@ -21,6 +21,18 @@
   include_vars: dvr_snat_l3_agent.yml
   when: "'NEU-DHCP' in group.services"
 
+- name: neutron-common | _configure_l3_agent | include dvr_snat_l3_agent vars
+  set_fact:
+    _l3_agent_extensions: >
+      {%- set _l3ae = [] -%}
+      {%- if 'NEU-L3A' in group.services -%}
+      {%-   set _ = _l3ae.append('fwaas') -%}
+      {%- endif -%}
+      {%- if 'NEU-VPNA' in group.services -%}
+      {%-   set _ = _l3ae.append('vpnaas') -%}
+      {%- endif -%}
+      {{- _l3ae -}}
+
 - include: _write_conf.yml
   src: "l3_agent.ini.j2"
   dest: "l3_agent.ini"

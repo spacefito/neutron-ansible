@@ -29,7 +29,12 @@ agent_mode = {{ neutron_l3_agent_mode }}
 external_network_bridge = {{ neutron_l3_agent_external_network_bridge }}
 
 [AGENT]
-extensions = fwaas
+extensions = {{ (_l3_agent_extensions | default(['fwaas'])) | join(',') }}
+
+{% if 'vpnaas' in _l3_agent_extensions %}
+[vpnagent]
+vpn_device_driver = neutron_vpnaas.services.vpn.device_drivers.strongswan_ipsec.StrongSwanDriver
+{% endif %}
 
 ### Add additional options here
 
