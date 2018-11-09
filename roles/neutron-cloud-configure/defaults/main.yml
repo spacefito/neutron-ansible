@@ -42,7 +42,26 @@ default_ext_net: "{%- set break = [] -%}
                          {%- for netgroup in network_tag_values[service] -%}
                              {%- if 'neutron.l3_agent.external_network_bridge' in network_tag_values[service][netgroup] -%}
                                  {%- if not break -%}
-                                     {'name': 'ext-net', 'cidr': '{{ EXT_NET_CIDR }}'}
+                                     {%- set provider_attrs = [] -%}
+                                     {%- if 'neutron.networks.flat' in network_tag_values[service][netgroup] -%}
+                                        {%- do provider_attrs.append('\\'network_type\\': \\'flat\\'') -%}
+                                        {%- if 'provider-physical-network' in network_tag_values[service][netgroup]['neutron.networks.flat'] -%}
+                                            {%- do provider_attrs.append('\\'physical_network\\': \\'' + network_tag_values[service][netgroup]['neutron.networks.flat']['provider-physical-network'] + '\\'') -%}
+                                        {%- endif -%}
+                                     {%- elif 'neutron.networks.vlan' in network_tag_values[service][netgroup] -%}
+                                        {%- do provider_attrs.append('\\'network_type\\': \\'vlan\\'') -%}
+                                        {%- if 'provider-physical-network' in network_tag_values[service][netgroup]['neutron.networks.vlan'] -%}
+                                            {%- do provider_attrs.append('\\'physical_network\\': \\'' + network_tag_values[service][netgroup]['neutron.networks.vlan']['provider-physical-network'] + '\\'') -%}
+                                        {%- endif -%}
+                                        {%- if 'provider-segmentation-id' in network_tag_values[service][netgroup]['neutron.networks.vlan'] -%}
+                                            {%- do provider_attrs.append('\\'segmentation_id\\': \\'' + network_tag_values[service][netgroup]['neutron.networks.vlan']['provider-segmentation-id'] + '\\'') -%}
+                                        {%- endif -%}
+                                     {%- endif -%}
+                                     {%- if provider_attrs | length > 0 -%}
+                                         {'name': 'ext-net', 'cidr': '{{ EXT_NET_CIDR }}', 'provider': [{ {{ provider_attrs | join(', ') }} }] }
+                                     {%- else  -%}
+                                         {'name': 'ext-net', 'cidr': '{{ EXT_NET_CIDR }}'}
+                                     {%- endif -%}
                                      {%- if break.append(1) -%}{%- endif -%}
                                  {%- endif -%}
                              {%- endif -%}
