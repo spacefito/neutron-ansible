@@ -127,6 +127,20 @@ neutron_flat_networks: "{% set flat_nets = [] %}
                             {%- endfor -%}
                         {%- endfor -%}
                         {{ flat_nets | unique | join(',') }}"
+
+# Retrieve the provider physical network names of all external networks
+neutron_ext_physnets: "{% set ext_physnets = [] %}
+                       {%- for ext_net in config_data | item('NEU.neutron_external_networks', default=[]) -%}
+                           {%- for provider in ext_net | item('provider', default=[]) -%}
+                               {%- set nt = provider | item('network_type', default='') -%}
+                               {%- if nt in ['flat', 'vlan'] -%}
+                                   {%- if provider.physical_network is defined -%}
+                                       {%- do ext_physnets.append(provider.physical_network) -%}
+                                   {%- endif -%}
+                               {%- endif -%}
+                           {%- endfor -%}
+                       {%- endfor -%}
+                       {{ ext_physnets | unique | join(',') }}"
 neutron_db_connection: "mysql+pymysql://{{ mysql.admin_user }}:{{ mysql.admin_password | urlencode }}@{{ mysql.host }}/ovs_neutron{{ mysql.db_ssl }}"
 neutron_bridge_mappings: "{% set temp_list = [] %}
                             {%- if host.my_network_tags is defined -%}
@@ -359,6 +373,7 @@ neutron_centralized_log_group: adm
 
 # neutron-l3-agent
 ## [DEFAULT]
+neutron_l3_agent_external_network_bridge: "{% if host.my_network_tags is defined %}{% for network_tag in host.my_network_tags %}{% for tag in network_tag.tags if tag.tag == 'neutron.l3_agent.external_network_bridge' %}{{ network_tag.device}}{% endfor %}{% endfor %}{% else %}br-ex{% endif %}"
 
 
 # neutron-dhcp-agent
