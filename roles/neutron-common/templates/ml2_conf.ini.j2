@@ -46,7 +46,6 @@ bridge_mappings = {{ neutron_bridge_mappings|trim }}
 datapath_type = {{ neutron_ovs_datapath_type }}
 vhostuser_socket_dir = /var/lib/libvirt/qemu
 of_interface = native
-ovsdb_interface = native
 
 [agent]
 tunnel_types = {{ neutron_tunnel_types|trim }}
