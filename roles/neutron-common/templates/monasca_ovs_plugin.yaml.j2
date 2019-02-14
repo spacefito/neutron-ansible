@@ -22,7 +22,9 @@
 init_config:
   password: {{ neutron_admin_password }}
   project_name: {{ neutron_admin_project_name }}
+  project_domain_name: Default
   username: {{ neutron_admin_user }}
+  user_domain_name: Default
   auth_url: {{ neutron_auth_url }}/v3
   endpoint_type: admin
   neutron_refresh: 14400
