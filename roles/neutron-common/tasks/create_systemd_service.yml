@@ -22,7 +22,7 @@
 
 - name: neutron-common | create_systemd_service | setup restart hold time
   set_fact:
-    restart_hold: "{{ service_restart_hold | default('100ms') }}"
+    restart_hold: "{{ service_restart_hold | default('5s') }}"
 
 - name: neutron-common | create_systemd_service | Construct command string
   set_fact:

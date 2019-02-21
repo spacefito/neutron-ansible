@@ -19,6 +19,8 @@
 [Unit]
 Description={{ neutron_service_cmd }} Service
 Requires={{ neutron_required_service }}
+Requires=network.service
+After=network.service
 
 [Service]
 ExecStart={{ neutron_component_exec_start }}
